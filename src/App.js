@@ -6,6 +6,7 @@ import Header from "./components/header/Header";
 
 const App = () => {
   const [data, setData] = useState([]);
+  const [msg, setMsg] = useState("");
 
   useEffect(() => {
     const getResult = async () => {
@@ -13,7 +14,7 @@ const App = () => {
         const response = await axios.get("http://127.0.0.1:8000/api/features");
         setData(response.data.result);
       } catch (error) {
-        console.log(error);
+        setMsg(error.message + " - couldn't load data! ");
       }
     };
     getResult();
@@ -26,6 +27,7 @@ const App = () => {
         {data.map(({ image, title, details, link }) => (
           <Card image={image} title={title} details={details} link={link} />
         ))}
+        {msg && <p className="text-primary">{msg}</p>}
       </CardsContainer>
     </div>
   );
